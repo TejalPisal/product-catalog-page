@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Catalog</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Product Catalog</h1>
+        <div class="search-filter">
+            <input type="text" id="search" placeholder="Search for products..." />
+            <select id="category-filter">
+                <option value="">All Categories</option>
+                <option value="Electronics">Electronics</option>
+                <option value="Furniture">Furniture</option>
+                <option value="Clothing">Clothing</option>
+                <option value="Accessories">Accessories</option>
+            </select>
+            <select id="price-filter">
+                <option value="">All Prices</option>
+                <option value="0-100">Under $100</option>
+                <option value="100-500">$100 - $500</option>
+                <option value="500-1000">$500 - $1000</option>
+                <option value="1000">Above $1000</option>
+            </select>
+        </div>
+    </header>
+    <main id="product-container">
+        <p id="loading-message">Loading products...</p>
+        <div class="error-message" id="error-message"></div>
+    </main>
+    <footer>
+        <button id="prev-page" disabled>Previous</button>
+        <span id="page-info"></span>
+        <button id="next-page">Next</button>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>
