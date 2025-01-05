@@ -1,95 +1,107 @@
-const apiUrl = 'https://mocki.io/v1/107aa1d2-e1b4-4ece-ae93-420ca5564301';
-let products = [];
+const apiURL = 'https://mocki.io/v1/107aa1d2-e1b4-4ece-ae93-420ca5564301';
+const productList = document.getElementById('product-list');
+const pagination = document.getElementById('pagination');
+const searchBar = document.getElementById('search-bar');
+const priceFilter = document.getElementById('price-filter');
+const categoryFilter = document.getElementById('category-filter');
+const availabilityFilter = document.getElementById('availability-filter');
+
 let currentPage = 1;
 let totalPages = 1;
-const perPage = 10;
+let products = [];
 
-document.addEventListener('DOMContentLoaded', () => {
-    loadProducts();
-    document.getElementById('search').addEventListener('input', filterProducts);
-    document.getElementById('category-filter').addEventListener('change', filterProducts);
-    document.getElementById('price-filter').addEventListener('change', filterProducts);
-    document.getElementById('prev-page').addEventListener('click', () => changePage(-1));
-    document.getElementById('next-page').addEventListener('click', () => changePage(1));
+// Fetch product data
+async function fetchProducts() {
+  try {
+    const response = await fetch(apiURL);
+    const data = await response.json();
+    products = data.products;
+    totalPages = data.pagination.total_pages;
+    renderProducts(products);
+    renderPagination();
+  } catch (error) {
+    productList.innerHTML = `<p>Error loading products. Please try again later.</p>`;
+  }
+}
+
+// Render products
+function renderProducts(products) {
+    const productList = document.querySelector('#product-list');
+    productList.innerHTML = ''; // Clear previous products
+    products.forEach(product => {
+      const productCard = document.createElement('div');
+      productCard.classList.add('product-card');
+      productCard.innerHTML = `
+        <img src="${product.image}" alt="${product.name}" loading="lazy" />
+        <h2>${product.name}</h2>
+        <p>$${product.price}</p>
+        <p>${product.availability ? 'In Stock' : 'Out of Stock'}</p>
+        <p>${product.description}</p>
+      `;
+      productList.appendChild(productCard);
+    });
+  }
+  
+
+// Render pagination
+function renderPagination() {
+  pagination.innerHTML = '';
+  for (let i = 1; i <= totalPages; i++) {
+    const pageButton = document.createElement('button');
+    pageButton.textContent = i;
+    pageButton.addEventListener('click', () => changePage(i));
+    if (i === currentPage) {
+      pageButton.classList.add('disabled');
+    }
+    pagination.appendChild(pageButton);
+  }
+}
+
+// Change page
+function changePage(page) {
+  currentPage = page;
+  // Filter and render new data based on page
+  renderProducts(products);
+  renderPagination();
+}
+
+// Search functionality
+searchBar.addEventListener('input', (e) => {
+  const query = e.target.value.toLowerCase();
+  const filteredProducts = products.filter(product => product.name.toLowerCase().includes(query));
+  renderProducts(filteredProducts);
 });
 
-async function loadProducts() {
-    try {
-        const response = await fetch(apiUrl);
-        const data = await response.json();
-        products = data.products;
-        totalPages = data.pagination.total_pages;
-        displayProducts();
-    } catch (error) {
-        document.getElementById('error-message').textContent = 'Failed to load products. Please try again later.';
-    }
-}
-
-function displayProducts() {
-    const container = document.getElementById('product-container');
-    container.innerHTML = ''; // Clear previous products
-    const filteredProducts = filterProducts();
-    const startIndex = (currentPage - 1) * perPage;
-    const paginatedProducts = filteredProducts.slice(startIndex, startIndex + perPage);
-
-    paginatedProducts.forEach(product => {
-        const productCard = document.createElement('div');
-        productCard.classList.add('product');
-        productCard.innerHTML = `
-            <img data-src="${product.image}" alt="${product.name}" class="lazy-image" />
-            <div class="product-details">
-                <h3>${product.name}</h3>
-                <p>${product.description}</p>
-                <p>$${product.price}</p>
-                <p>${product.availability ? 'In Stock' : 'Out of Stock'}</p>
-            </div>
-        `;
-        container.appendChild(productCard);
-    });
-
-    document.getElementById('page-info').textContent = `Page ${currentPage} of ${totalPages}`;
-    document.getElementById('prev-page').disabled = currentPage === 1;
-    document.getElementById('next-page').disabled = currentPage === totalPages;
-
-    lazyLoadImages();
-}
-
+// Filter functionality
 function filterProducts() {
-    const searchTerm = document.getElementById('search').value.toLowerCase();
-    const category = document.getElementById('category-filter').value;
-    const priceRange = document.getElementById('price-filter').value.split('-');
+  let filtered = products;
 
-    return products.filter(product => {
-        return (
-            product.name.toLowerCase().includes(searchTerm) &&
-            (category === '' || product.category === category) &&
-            (priceRange.length < 2 || (product.price >= priceRange[0] && product.price <= (priceRange[1] || Infinity)))
-        );
-    });
+  // Filter by price
+  const priceRange = priceFilter.value;
+  if (priceRange !== 'all') {
+    const [min, max] = priceRange.split('-');
+    filtered = filtered.filter(product => product.price >= min && product.price <= max);
+  }
+
+  // Filter by category
+  const category = categoryFilter.value;
+  if (category !== 'all') {
+    filtered = filtered.filter(product => product.category === category);
+  }
+
+  // Filter by availability
+  const availability = availabilityFilter.value;
+  if (availability !== 'all') {
+    const isAvailable = availability === 'available';
+    filtered = filtered.filter(product => product.availability === isAvailable);
+  }
+
+  renderProducts(filtered);
 }
 
-function changePage(direction) {
-    currentPage += direction;
-    displayProducts();
-}
+priceFilter.addEventListener('change', filterProducts);
+categoryFilter.addEventListener('change', filterProducts);
+availabilityFilter.addEventListener('change', filterProducts);
 
-function lazyLoadImages() {
-    const images = document.querySelectorAll('.lazy-image');
-    const options = {
-        root: null,
-        rootMargin: '0px',
-        threshold: 0.1
-    };
-
-    const observer = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const img = entry.target;
-                img.src = img.getAttribute('data-src');
-                observer.unobserve(img);
-            }
-        });
-    }, options);
-
-    images.forEach(image => observer.observe(image));
-}
+// Initialize
+fetchProducts();
