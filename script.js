@@ -1,5 +1,5 @@
 // API URL for fetching product data
-const apiUrl = 'https://mocki.io/v1/82663872-79f1-4d64-a17c-8d20e67db864';
+const apiUrl = 'https://mocki.io/v1/e5681b4d-c3bf-47b3-a3d6-5123ea610fdf';
 let products = [];
 let cart = [];
 let filteredProducts = [];
