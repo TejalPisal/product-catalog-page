@@ -10,24 +10,24 @@
 </head>
 <body>
   <header>
-    <div class="header-content">
+    <div class="header-content" role="banner">
         <div class="search-bar">
-            <input type="text" id="search-input" placeholder="Search for products, brands, and more...">
-            <button onclick="searchProducts()"><i class="fas fa-search"></i></button>
+            <input type="text" id="search-input" aria-label="Search for products, brands, and more" placeholder="Search for products, brands, and more...">
+            <button onclick="searchProducts()" aria-label="Search" tabindex="0"><i class="fas fa-search"></i></button>
         </div>
         <div class="cart">
-            <button id="cart-btn" onclick="toggleCart()">Cart (<span id="cart-count">0</span>)</button>
+            <button id="cart-btn" aria-label="Cart" onclick="toggleCart()" tabindex="0">Cart (<span id="cart-count">0</span>)</button>
         </div>
     </div>
 </header>
 
-    <div class="container">
-        <aside id="sidebar">
+    <div class="container" role="main">
+        <aside id="sidebar" aria-labelledby="filters-heading">
             <h2>Filters</h2>
             <!-- Price Range Filter -->
             <div class="filter-group">
                 <label for="price-range">Price Range</label>
-                <select id="price-range" onchange="filterByPrice()">
+                <select id="price-range" aria-label="Filter by price range" onchange="filterByPrice()" tabindex="0">
                     <option value="all">All</option>
                     <option value="0-50">$0 - $50</option>
                     <option value="50-100">$50 - $100</option>
@@ -40,7 +40,7 @@
             <!-- Category Filter -->
             <div class="filter-group">
               <label for="category-filter">Category</label>
-              <select id="category-filter" onchange="filterByCategory()">
+              <select id="category-filter" aria-label="Filter by category" onchange="filterByCategory()" tabindex="0">
                   <option value="all">All</option>
                   <option value="Electronics">Electronics</option>
                   <option value="Furniture">Furniture</option>
@@ -67,27 +67,27 @@
             <!-- Sort By Price -->
             <div class="filter-group">
                 <label for="sort-price">Sort by Price</label>
-                <button onclick="sortByPrice('low-to-high')">Low to High</button>
-                <button onclick="sortByPrice('high-to-low')">High to Low</button>
+                <button onclick="sortByPrice('low-to-high')" tabindex="0">Low to High</button>
+                <button onclick="sortByPrice('high-to-low')" tabindex="0">High to Low</button>
             </div>
         </aside>
 
         <main>
-            <div id="product-list" class="product-list"></div>
+            <div id="product-list" class="product-list" role="list"></div>
 
             <!-- Pagination Controls -->
-            <div id="pagination" class="pagination"></div>
+            <div id="pagination" class="pagination" role="navigation" aria-label="Pagination Controls"></div>
 
             <!-- Cart Modal -->
-            <div id="cart-modal" class="cart-modal hidden">
+            <div id="cart-modal" class="cart-modal hidden" role="dialog" aria-labelledby="cart-heading">
                 <h2>Your Cart</h2>
-                <div id="cart-items"></div>
-                <button class="close-cart" onclick="toggleCart()">Close Cart</button>
+                <div id="cart-items" role="list"></div>
+                <button class="close-cart" onclick="toggleCart()" aria-label="Close Cart" tabindex="0">Close Cart</button>
             </div>
 
             <!-- Product Detail Popup -->
-            <div id="product-popup" class="popup hidden">
-                <button class="back-btn" onclick="closePopup()">Back</button>
+            <div id="product-popup" class="popup hidden" role="dialog" aria-labelledby="popup-heading">
+                <button class="back-btn" onclick="closePopup()" aria-label="Back" tabindex="0">Back</button>
                 <div id="popup-content" class="popup-content"></div>
             </div>
         </main>
