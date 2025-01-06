@@ -126,16 +126,83 @@ function toggleCart() {
     cartModal.classList.toggle('hidden');
 }
 
-// Search products
-function searchProducts() {
-    const searchInput = document.getElementById('search-input').value.toLowerCase();
-    filteredProducts = products.filter(product =>
-        product.name.toLowerCase().includes(searchInput) ||
-        product.category.toLowerCase().includes(searchInput)
-    );
-    currentPage = 1; // Reset to first page on search
-    displayProducts(filteredProducts, currentPage);
+const searchInput = document.getElementById('search-input');
+const suggestionsContainer = document.getElementById('suggestions-container');
+const suggestionsList = document.getElementById('suggestions-list');
+
+searchInput.addEventListener('input', function() {
+  const query = searchInput.value.toLowerCase();
+  
+  if (query) {
+    const filteredSuggestions = products.filter(product => {
+      return product.name.toLowerCase().includes(query) || product.category.toLowerCase().includes(query);
+    });
+
+    if (filteredSuggestions.length > 0) {
+      suggestionsContainer.style.display = 'block';
+      suggestionsList.innerHTML = filteredSuggestions.map(product => {
+        return `<li data-id="${product.id}">${product.name} (${product.category})</li>`;
+      }).join('');
+    } else {
+      suggestionsContainer.style.display = 'none';
+    }
+  } else {
+    suggestionsContainer.style.display = 'none';
+  }
+});
+
+document.addEventListener('click', function(event) {
+  if (!searchInput.contains(event.target) && !suggestionsContainer.contains(event.target)) {
+    suggestionsContainer.style.display = 'none';
+  }
+});
+
+suggestionsList.addEventListener('click', function(event) {
+  const productId = event.target.getAttribute('data-id');
+  if (productId) {
+    // Find the selected product based on the clicked suggestion
+    const selectedProduct = products.find(product => product.id == productId);
+    
+    // Set the search input value to the selected product's name
+    searchInput.value = selectedProduct.name;
+    
+    // Hide the suggestion list after selecting a product
+    suggestionsContainer.style.display = 'none';
+    
+    // Filter products to display only the selected product
+    filteredProducts = [selectedProduct];
+    
+    // Display the selected product
+    displayProducts(filteredProducts, 1);
+    
+    // Update pagination (if needed, here only 1 product will show, so you can skip pagination)
     createPagination(filteredProducts);
+  }
+});
+
+
+
+searchInput.addEventListener('focus', function() {
+  if (searchInput.value) {
+    suggestionsContainer.style.display = 'block';
+  }
+});
+
+// Search products
+// Search products when clicking the search button
+function searchProducts() {
+  const searchQuery = document.getElementById('search-input').value.toLowerCase();
+  // Filter products based on search query
+  filteredProducts = products.filter(product =>
+      product.name.toLowerCase().includes(searchQuery) ||
+      product.category.toLowerCase().includes(searchQuery)
+  );
+  
+  // Display filtered products
+  displayProducts(filteredProducts, 1);
+  
+  // Update pagination
+  createPagination(filteredProducts);
 }
 
 // Filter products based on all criteria

@@ -15,6 +15,7 @@ header {
   justify-content: space-between;
   align-items: center;
   background-color: #f8f9fa;
+  border: 1px solid #d3d6da;
   padding: 10px;
   border-radius: 8px;
   width: 100%;  
@@ -71,6 +72,35 @@ header {
 
 .search-bar button i {
   font-size: 18px;
+}
+
+.suggestions-container {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 10;
+  display: none;  /* Initially hidden */
+}
+
+.suggestions-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.suggestions-list li {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.suggestions-list li:hover {
+  background-color: #f0f0f0;
 }
 
 .cart {
@@ -405,5 +435,15 @@ main {
 @media (min-width: 769px) {
   .product {
     width: calc(25% - 15px); 
+  }
+}
+
+@media (max-width: 600px) {
+  .search-bar {
+      width: 100%;
+  }
+
+  .suggestions-container {
+      width: 100%;
   }
 }
