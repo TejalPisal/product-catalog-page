@@ -10,12 +10,12 @@ body {
   padding: 20px;
 }
 
+/* Header Section */
 header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   background-color: #f8f9fa;
-  /* border: 1px solid #d3d6da; */
   padding: 10px;
   border-radius: 8px;
   width: 100%;  
@@ -24,6 +24,7 @@ header {
   animation: fadeIn 0.5s ease-in-out;
 }
 
+/* Animation to fade elements in */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -33,6 +34,7 @@ header {
   }
 }
 
+/* Header Content Styling */
 .header-content {
   display: flex;
   align-items: center;
@@ -42,6 +44,7 @@ header {
   flex-wrap: nowrap;
 }
 
+/* Search Bar */
 .search-bar {
   display: flex;
   align-items: center;
@@ -61,6 +64,7 @@ header {
   }
 }
 
+/* Input Field Styling */
 .search-bar input {
   padding: 10px 40px 10px 15px;  
   font-size: 16px;
@@ -74,6 +78,7 @@ header {
   border-color: #007bff;  
 }
 
+/* Button Styling */
 .search-bar button {
   padding: 8px 12px;
   background-color: #ff9900;
@@ -89,13 +94,13 @@ header {
 
 .search-bar button:hover {
   background-color: #e68900;
-  transform: scale(1.1); 
 }
 
 .search-bar button i {
   font-size: 18px;
 }
 
+/* Suggestions Container Styling */
 .suggestions-container {
   position: absolute;
   top: 100%;
@@ -107,9 +112,10 @@ header {
   max-height: 200px;
   overflow-y: auto;
   z-index: 10;
-  display: none;  /* Initially hidden */
+  display: none;  
 }
 
+/* Suggestions List Styling */
 .suggestions-list {
   list-style: none;
   padding: 0;
@@ -126,6 +132,7 @@ header {
   background-color: #f0f0f0;
 }
 
+/* Cart Button Styling */
 .cart {
   margin-left: 20px;
 }
@@ -146,12 +153,14 @@ header {
   transform: scale(1.1);
 }
 
+/* Main Container Layout */
 .container {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;  
 }
 
+/* Sidebar Styling */
 #sidebar {
   width: 250px;
   padding: 15px;
@@ -159,11 +168,13 @@ header {
   border-right: 1px solid #ddd;
 }
 
+/* Main Content Area */
 main {
   flex: 1;
   padding: 20px;
 }
 
+/* Filter Group Styling */
 .filter-group {
   margin-bottom: 20px;
 }
@@ -180,12 +191,14 @@ main {
   margin-bottom: 10px;
 }
 
+/* Product List Styling */
 .product-list {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
 }
 
+/* Product Item Styling */
 .product {
   border: 1px solid #ddd;
   padding: 15px;
@@ -210,6 +223,7 @@ main {
   }
 }
 
+/* Product Image Styling */
 .product img {
   object-fit: cover;
   height: 250px;
@@ -220,9 +234,11 @@ main {
 }
 
 .product img:hover {
-  transform: scale(1.05); /* Add image hover effect */
+  transform: scale(1.05); 
 }
 
+
+/* Product Title Styling */
 .product h3 {
   font-size: 18px;
   height: 40px;
@@ -232,6 +248,7 @@ main {
   margin-bottom: 10px;
 }
 
+/* Product Description Styling */
 .product p {
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -240,6 +257,7 @@ main {
   margin-bottom: 15px;
 }
 
+/* Product Price Styling */
 .product .price {
   font-weight: bold;
   margin-bottom: 10px;
@@ -289,7 +307,7 @@ main {
 .buy-product-btn:hover {
   background-color: #e68900;
 }
-
+/* Close Button Styling */
 .close-cart{
   background-color: red;
   color: white;
@@ -299,6 +317,7 @@ main {
   border-radius: 5px;
 }
 
+/* Add to Cart Button Styling */
 .add-to-cart-btn {
   padding: 8px 12px;
   background-color: #fb641b;
@@ -315,6 +334,7 @@ main {
   cursor: not-allowed;
 }
 
+/* Cart Styling */
 .cart-modal {
   position: fixed;
   top: 20%;
@@ -333,6 +353,7 @@ main {
   display: none;
 }
 
+/* Popup Styling */
 .popup {
   position: fixed;
   top: 20%;
@@ -410,22 +431,17 @@ main {
   .container {
     flex-direction: column;
   }
-
   #sidebar {
     width: 100%;
     border-right: none;
     border-bottom: 1px solid #ddd;
   }
-
-  /* Ensure filter groups take up full width */
   .filter-group select, .filter-group button {
     width: 100%;
   }
-
   .product {
     width: calc(33.33% - 13.33px); 
   }
-
   .product-list {
     flex-direction: row;
     align-items: center;
@@ -437,19 +453,15 @@ main {
     flex-direction: column;
     width: 100%;
   }
-
   .cart button {
     width: 100%;
   }
-
   .search-bar input {
     width: 100%;
   }
-
   .product {
     width: calc(50% - 10px); 
   }
-
   .pagination button {
     padding: 8px 12px;
     font-size: 14px;
@@ -461,21 +473,17 @@ main {
     flex-direction: column;
     align-items: flex-start;
   }
-
   .search-bar {
     width: 100%;
     gap: 0;
   }
-
   .cart {
     width: 100%;
     justify-content: flex-start;
   }
-
   .search-bar input {
     width: calc(100% - 50px);
   }
-
   .search-bar button {
     width: 50px;
   }
@@ -491,7 +499,6 @@ main {
   .search-bar {
       width: 100%;
   }
-
   .suggestions-container {
       width: 100%;
   }

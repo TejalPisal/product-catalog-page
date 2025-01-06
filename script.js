@@ -1,3 +1,4 @@
+// API URL for fetching product data
 const apiUrl = 'https://mocki.io/v1/82663872-79f1-4d64-a17c-8d20e67db864';
 let products = [];
 let cart = [];
@@ -23,16 +24,18 @@ async function fetchProducts() {
 function displayProducts(productArray, page) {
     const productList = document.getElementById('product-list');
     productList.innerHTML = ''; // Clear current products
-
+    // If no products match the filter, display a message
     if (productArray.length === 0) {
         productList.innerHTML = '<p>No products available for the selected filters.</p>';
         return;
     }
 
+    // Calculate the range of products to display based on the current page
     const start = (page - 1) * productsPerPage;
     const end = start + productsPerPage;
     const productsToDisplay = productArray.slice(start, end);
 
+    // Create and append a card for each product to display
     productsToDisplay.forEach(product => {
         const productCard = document.createElement('div');
         productCard.className = 'product';
@@ -48,13 +51,14 @@ function displayProducts(productArray, page) {
     });
 }
 
-// Create pagination buttons
+// Create pagination buttons to navigate between pages
 function createPagination(productArray) {
     const paginationDiv = document.getElementById('pagination');
     paginationDiv.innerHTML = ''; // Clear existing pagination
 
     const totalPages = Math.ceil(productArray.length / productsPerPage);
 
+    // Generate a button for each page
     for (let i = 1; i <= totalPages; i++) {
         const pageButton = document.createElement('button');
         pageButton.textContent = i;
@@ -64,14 +68,14 @@ function createPagination(productArray) {
     }
 }
 
-// Navigate to a specific page
+// Navigate to a specific page and update the product display and pagination
 function goToPage(page) {
     currentPage = page;
     displayProducts(filteredProducts, currentPage);
     createPagination(filteredProducts);
 }
 
-// Open product detail popup
+// Open product detail in popup
 function viewProduct(productId) {
     const product = products.find(p => p.id === productId);
     const popupContent = document.getElementById('popup-content');
@@ -126,6 +130,7 @@ function toggleCart() {
     cartModal.classList.toggle('hidden');
 }
 
+// Event listener for search input to display suggestions
 const searchInput = document.getElementById('search-input');
 const suggestionsContainer = document.getElementById('suggestions-container');
 const suggestionsList = document.getElementById('suggestions-list');
@@ -151,44 +156,35 @@ searchInput.addEventListener('input', function() {
   }
 });
 
+// Event listener to close suggestions if clicked outside the input field
 document.addEventListener('click', function(event) {
   if (!searchInput.contains(event.target) && !suggestionsContainer.contains(event.target)) {
     suggestionsContainer.style.display = 'none';
   }
 });
 
+// Handle selection of a product from the suggestions list
 suggestionsList.addEventListener('click', function(event) {
   const productId = event.target.getAttribute('data-id');
   if (productId) {
-    // Find the selected product based on the clicked suggestion
     const selectedProduct = products.find(product => product.id == productId);
-    
-    // Set the search input value to the selected product's name
     searchInput.value = selectedProduct.name;
-    
-    // Hide the suggestion list after selecting a product
     suggestionsContainer.style.display = 'none';
-    
-    // Filter products to display only the selected product
     filteredProducts = [selectedProduct];
     
     // Display the selected product
     displayProducts(filteredProducts, 1);
-    
-    // Update pagination (if needed, here only 1 product will show, so you can skip pagination)
     createPagination(filteredProducts);
   }
 });
 
-
-
+// Event listener to display suggestions when the search input is focused
 searchInput.addEventListener('focus', function() {
   if (searchInput.value) {
     suggestionsContainer.style.display = 'block';
   }
 });
 
-// Search products
 // Search products when clicking the search button
 function searchProducts() {
   const searchQuery = document.getElementById('search-input').value.toLowerCase();
@@ -196,11 +192,9 @@ function searchProducts() {
   filteredProducts = products.filter(product =>
       product.name.toLowerCase().includes(searchQuery) ||
       product.category.toLowerCase().includes(searchQuery)
-  );
-  
+  ); 
   // Display filtered products
   displayProducts(filteredProducts, 1);
-  
   // Update pagination
   createPagination(filteredProducts);
 }
@@ -208,27 +202,23 @@ function searchProducts() {
 // Filter products based on all criteria
 function applyFilters() {
     filteredProducts = products;
-
     // Apply category filter
     const category = document.getElementById('category-filter').value;
     if (category !== 'all') {
         filteredProducts = filteredProducts.filter(product => product.category === category);
     }
-
     // Apply price filter
     const priceRange = document.getElementById('price-range').value;
     if (priceRange !== 'all') {
         const [min, max] = priceRange === '500+' ? [500, Infinity] : priceRange.split('-').map(Number);
         filteredProducts = filteredProducts.filter(product => product.price >= min && product.price <= max);
     }
-
     // Apply availability filter
     const availabilityFilter = document.getElementById('availability-filter').value;
     if (availabilityFilter !== 'all') {
         const isAvailable = availabilityFilter === 'in-stock';
         filteredProducts = filteredProducts.filter(product => product.availability === isAvailable);
     }
-
     currentPage = 1; // Reset to first page on filter
     displayProducts(filteredProducts, currentPage);
     createPagination(filteredProducts);
@@ -246,14 +236,11 @@ function sortByPrice(order) {
 function filterByPrice() {
     applyFilters();
 }
-
 function filterByCategory() {
     applyFilters();
 }
-
 function filterByAvailability() {
     applyFilters();
 }
-
 // Initialize the page
 fetchProducts();
