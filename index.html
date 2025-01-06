@@ -1,48 +1,98 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Product Catalog</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Catalog with Sidebar & Cart</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
 </head>
 <body>
   <header>
-    <h1>Product Catalog</h1>
-    <input type="text" id="search-bar" placeholder="Search for products..." />
-  </header>
-  
-  <section class="filters">
-    <label for="price-filter">Price Range:</label>
-    <select id="price-filter">
-      <option value="all">All</option>
-      <option value="0-50">$0 - $50</option>
-      <option value="51-100">$51 - $100</option>
-      <option value="101-500">$101 - $500</option>
-    </select>
+    <div class="header-content">
+        <div class="search-bar">
+            <input type="text" id="search-input" placeholder="Search for products, brands, and more...">
+            <button onclick="searchProducts()"><i class="fas fa-search"></i></button>
+        </div>
+        <div class="cart">
+            <button id="cart-btn" onclick="toggleCart()">Cart (<span id="cart-count">0</span>)</button>
+        </div>
+    </div>
+</header>
 
-    <label for="category-filter">Category:</label>
-    <select id="category-filter">
-      <option value="all">All</option>
-      <option value="Electronics">Electronics</option>
-      <option value="Furniture">Furniture</option>
-      <option value="Shoes">Shoes</option>
-      <option value="Clothing">Clothing</option>
-      <option value="Home & Kitchen">Home & Kitchen</option>
-    </select>
+    <div class="container">
+        <aside id="sidebar">
+            <h2>Filters</h2>
+            <!-- Price Range Filter -->
+            <div class="filter-group">
+                <label for="price-range">Price Range</label>
+                <select id="price-range" onchange="filterByPrice()">
+                    <option value="all">All</option>
+                    <option value="0-50">$0 - $50</option>
+                    <option value="50-100">$50 - $100</option>
+                    <option value="100-200">$100 - $200</option>
+                    <option value="200-500">$200 - $500</option>
+                    <option value="500+">$500+</option>
+                </select>
+            </div>
 
-    <label for="availability-filter">Availability:</label>
-    <select id="availability-filter">
-      <option value="all">All</option>
-      <option value="available">Available</option>
-      <option value="unavailable">Unavailable</option>
-    </select>
-  </section>
+            <!-- Category Filter -->
+            <div class="filter-group">
+              <label for="category-filter">Category</label>
+              <select id="category-filter" onchange="filterByCategory()">
+                  <option value="all">All</option>
+                  <option value="Electronics">Electronics</option>
+                  <option value="Furniture">Furniture</option>
+                  <option value="Shoes">Shoes</option>
+                  <option value="Clothing">Clothing</option>
+                  <option value="Fitness">Fitness</option>
+                  <option value="Personal Care">Personal Care</option>
+                  <option value="Home Appliances">Home Appliances</option>
+                  <option value="Home & Kitchen">Home & Kitchen</option>
+                  <option value="Accessories">Accessories</option>
+              </select>
+            </div>
 
-  <section id="product-list" class="product-list"></section>
+            <!-- Availability Filter -->
+            <div class="filter-group">
+                <label for="availability-filter">Availability</label>
+                <select id="availability-filter" onchange="filterByAvailability()">
+                    <option value="all">All</option>
+                    <option value="in-stock">In Stock</option>
+                    <option value="out-of-stock">Out of Stock</option>
+                </select>
+            </div>
 
-  <div id="pagination" class="pagination"></div>
+            <!-- Sort By Price -->
+            <div class="filter-group">
+                <label for="sort-price">Sort by Price</label>
+                <button onclick="sortByPrice('low-to-high')">Low to High</button>
+                <button onclick="sortByPrice('high-to-low')">High to Low</button>
+            </div>
+        </aside>
 
-  <script src="script.js"></script>
+        <main>
+            <div id="product-list" class="product-list"></div>
+
+            <!-- Pagination Controls -->
+            <div id="pagination" class="pagination"></div>
+
+            <!-- Cart Modal -->
+            <div id="cart-modal" class="cart-modal hidden">
+                <h2>Your Cart</h2>
+                <div id="cart-items"></div>
+                <button class="close-cart" onclick="toggleCart()">Close Cart</button>
+            </div>
+
+            <!-- Product Detail Popup -->
+            <div id="product-popup" class="popup hidden">
+                <button class="back-btn" onclick="closePopup()">Back</button>
+                <div id="popup-content" class="popup-content"></div>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
